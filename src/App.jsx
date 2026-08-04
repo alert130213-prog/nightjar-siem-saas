@@ -116,7 +116,7 @@ const TRANSLATIONS = {
     tabPricing: "24/7 SUBSCRIPTION",
     tabAdmin: "SOC CONSOLE",
     heroBadge: "NIGHTJAR 24/7 ACTIVE THREAT INTERCEPTION SYSTEM",
-    heroSlogan: ""Your peace of mind is our priority. Save your energy and nerves. We never sleep"",
+    heroSlogan: "Your peace of mind is our priority. Save your energy and nerves. We never sleep",
     heroSub: "24/7 automated WAF & SIEM security suite. We monitor client web applications in real time, intercept 99.9% of cyber threats before intrusion, and patch vulnerabilities immediately.",
     btnConnect: "ENABLE 24/7 PROTECTION",
     btnCheckVuln: "SCAN FOR VULNERABILITIES",
