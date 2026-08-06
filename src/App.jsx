@@ -134,7 +134,7 @@ const TRANSLATIONS = {
     tabBilling: "BILLING & INVOICES",
     tabAdmin: "SOC CONSOLE (RESTRICTED)",
     heroBadge: "NIGHTJAR 24/7 ACTIVE THREAT INTERCEPTION & FIRESTORE SYNC",
-    heroSlogan: ""Enterprise-grade cloud security. Data protected by Firebase Firestore & 24/7 WAF"",
+    heroSlogan: "Enterprise-grade cloud security. Data protected by Firebase Firestore & 24/7 WAF",
     heroSub: "Automated real-time threat interception platform with persistent log storage, instant Telegram alerts, and deep security header inspection.",
     btnConnect: "ENABLE 24/7 PROTECTION",
     btnCheckVuln: "SCAN VULNERABILITIES (REAL PROBE)",
