@@ -191,7 +191,7 @@ const INITIAL_VULNS = [
 ];
 
 const INITIAL_DOMomains = [
-  { id: 'DOM-1', name: 'client-secure.nightjar-soc.com', type: 'Free Subdomain', status: 'ACTIVE', ssl: 'Let's Encrypt SSL (Valid)', waf: 'Protected (Strict)' },
+  { id: 'DOM-1', name: 'client-secure.nightjar-soc.com', type: 'Free Subdomain', status: 'ACTIVE', ssl: "Let's Encrypt SSL (Valid)", waf: 'Protected (Strict)' },
   { id: 'DOM-2', name: 'store-app.io', type: 'Custom Domain', status: 'ACTIVE', ssl: 'Cloudflare SSL', waf: 'Protected (Standard)' }
 ];
 
