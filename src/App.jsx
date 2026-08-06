@@ -1,4 +1,5 @@
 import { db } from './firebase';
+import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut } from 'firebase/auth';
 import { collection, addDoc, getDocs, query, orderBy, limit } from 'firebase/firestore';
 import React, { useState, useEffect, useRef } from 'react';
 import { 
@@ -698,8 +699,15 @@ const addLogToFirestore = async (logData) => {
             </div>
           </div>
 
-          <div className="hidden md:flex items-center gap-4 text-xs">
-            <div className="flex items-center border border-slate-800 bg-slate-950 font-bold">
+        <div className="hidden sm:flex items-center gap-2 text-xs bg-slate-950 px-3 py-1.5 border border-slate-800">
+  <span className="text-slate-400">СТАТУС:</span>
+  <span className={`font-bold ${user.isLoggedIn ? 'text-emerald-400' : 'text-rose-400'}`}>
+    {user.isLoggedIn ? '✅ ОНЛАЙН' : '❌ ОФЛАЙН'}
+  </span>
+  <span className="text-slate-500">|</span>
+  <span className="text-slate-400">РОЛЬ:</span>
+  <span className="text-cyan-400 font-bold">{user.role}</span>
+</div>
               <button 
                 onClick={() => setLang('ua')}
                 className={`px-2 py-1 text-[10px] transition-all ${lang === 'ua' ? 'bg-rose-600 text-slate-950 font-black' : 'text-slate-400 hover:text-slate-100'}`}
@@ -1695,12 +1703,13 @@ const addLogToFirestore = async (logData) => {
                 </select>
               </div>
 
-              <button
-                type="submit"
-                className="w-full py-3 bg-rose-600 hover:bg-rose-500 text-slate-950 font-black transition-all"
-              >
-                ПІДТВЕРДИТИ УВІХІД / РЕЄСТРАЦІЮ
-              </button>
+           <button
+  type="submit"
+  className="w-full py-3 bg-rose-600 hover:bg-rose-500 text-slate-950 font-black transition-all"
+>
+  {authRoleInput === 'CLIENT' ? 'ЗАРЕЄСТРУВАТИСЯ' : 'УВІЙТИ ЯК АДМІН'}
+</button>
+
             </form>
           </div>
         </div>
