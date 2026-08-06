@@ -278,8 +278,8 @@ export default function App() {
   // Налаштування сповіщень
   const [notifConfig, setNotifConfig] = useState({
   telegramEnabled: true,
-  telegramBotToken: '8964468154:AAE1CK7aN9Rj7JdpTOemiG6WWWf3dB2lOlE',
-  telegramChatId: '8449507380',
+  telegramBotToken: import.meta.env.VITE_TELEGRAM_BOT_TOKEN,
+  telegramChatId: import.meta.env.VITE_TELEGRAM_CHAT_ID,
   emailEnabled: true,
   emailAddress: 'security-alerts@client-corp.com',
   notifyOnCritical: true,
@@ -1325,17 +1325,20 @@ const addLogToFirestore = async (logData) => {
                     />
                   </div>
 
-                  <div className="space-y-3 text-xs">
-                    <div>
-                      <label className="text-slate-400 block mb-1">Telegram Bot Token (Активний):</label>
-                      <input
-                        type="text"
-                        value={notifConfig.telegramBotToken}
-                        onChange={(e) => setNotifConfig({...notifConfig, telegramBotToken: e.target.value})}
-                        className="w-full bg-slate-900 border border-slate-800 p-2.5 text-slate-200 text-emerald-400"
-                      />
-                    </div>
-                    <div>
+            <div className="space-y-3 text-xs">
+            <div>
+            <div className="text-slate-400 block mb-1">Telegram Bot Token:</div>
+            <div className="bg-slate-900 border border-slate-800 p-2.5 text-emerald-400 text-xs">
+            ✅ Бот підключено
+            </div>
+            </div>
+            <div>
+            <div className="text-slate-400 block mb-1">Telegram Chat ID:</div>
+            <div className="bg-slate-900 border border-slate-800 p-2.5 text-emerald-400 text-xs">
+            ✅ ID активовано
+            </div>
+            </div>
+            <div>
                       <label className="text-slate-400 block mb-1">Telegram Chat ID:</label>
                       <input
                         type="text"
