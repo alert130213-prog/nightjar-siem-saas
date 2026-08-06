@@ -1,3 +1,5 @@
+import { db } from './firebase';
+import { collection, addDoc, getDocs, query, orderBy, limit } from 'firebase/firestore';
 import React, { useState, useEffect, useRef } from 'react';
 import { 
   Shield, 
@@ -280,11 +282,8 @@ export default function App() {
     telegramChatId: '-1001928349120',
     emailEnabled: true,
     emailAddress: 'security-alerts@client-corp.com',
-    notifyOnCritical: true,
-    notifyOnHigh: true
-  });
-
-  const [logs, setLogs] = useState(INITIAL_LOGS);
+    notifyOnCo;
+  const [logs, setLogs] = useState([]);
   const [vulnerabilities, setVulnerabilities] = useState(INITIAL_VULNS);
   const [credits, setCredits] = useState(1200);
   
@@ -324,6 +323,20 @@ export default function App() {
   const [logSearchQuery, setLogSearchQuery] = useState('');
   const [selectedLogDetail, setSelectedLogDetail] = useState(null);
   const [tickets, setTickets] = useState([]);
+ // Завантаження логів з Firestore
+ useEffect(() => {
+  const loadLogs = async () => {
+    try {
+      const q = query(collection(db, "logs"), orderBy("timestamp", "desc"), limit(50));
+      const querySnapshot = await getDocs(q);
+      const loadedLogs = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      setLogs(loadedLogs);
+    } catch (error) {
+      console.error("Помилка завантаження логів:", error);
+    }
+  };
+  loadLogs();
+}, []); 
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -372,6 +385,7 @@ export default function App() {
         };
       }
 
+      addLogToFirestore(newLog);
       setLogs(prev => [newLog, ...prev.slice(0, 49)]);
       if (isVideoPlaying) {
         setInterceptedCount(prev => prev + 1);
@@ -396,6 +410,15 @@ export default function App() {
     setUser({ email: '', role: 'CLIENT', isLoggedIn: false });
     setAuthModalOpen(true);
   };
+ // Функція для запису логів у Firestore
+const addLogToFirestore = async (logData) => {
+  try {
+    const docRef = await addDoc(collection(db, "logs"), logData);
+    console.log("Лог збережено з ID:", docRef.id);
+  } catch (error) {
+    console.error("Помилка збереження логу:", error);
+  }
+};
 
   const sendTelegramAlert = async (text) => {
     if (!notifConfig.telegramEnabled || !notifConfig.telegramBotToken || !notifConfig.telegramChatId) {
