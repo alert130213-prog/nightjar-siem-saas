@@ -398,13 +398,33 @@ export default function App() {
     return () => clearInterval(interval);
   }, [isVideoPlaying]);
 
-  const handleAuthSubmit = (e) => {
-    e.preventDefault();
+const handleAuthSubmit = async (e) => {
+  e.preventDefault();
+  try {
+    const userCredential = await signInWithEmailAndPassword(auth, authEmailInput, authPasswordInput);
+    const loggedUser = userCredential.user;
+    
+    // 🔍 ОТРИМУЄМО РОЛЬ КОРИСТУВАЧА З FIRESTORE
+    const userDoc = await getDoc(doc(db, "users", loggedUser.uid));
+    const userData = userDoc.data();
+    const role = userData?.role || 'CLIENT'; // Якщо ролі немає -- ставимо CLIENT
+    
     setUser({
-      email: authEmailInput || 'user@nightjar-soc.com',
-      role: authRoleInput,
+      email: loggedUser.email,
+      role: role,
       isLoggedIn: true
     });
+    setAuthModalOpen(false);
+    
+    if (role === 'SOC_ADMIN') {
+      alert(`✅ Вітаємо, Адміністраторе ${loggedUser.email}!`);
+    } else {
+      alert(`✅ Вітаємо, ${loggedUser.email}! Ви увійшли як клієнт.`);
+    }
+  } catch (error) {
+    alert(`❌ Помилка входу: ${error.message}`);
+  }
+};
     setAuthModalOpen(false);
     alert(lang === 'ua' ? `Успішний вхід як ${authRoleInput} (${authEmailInput})!` : `Successfully logged in as ${authRoleInput}!`);
   };
