@@ -278,8 +278,8 @@ export default function App() {
   // Налаштування сповіщень
   const [notifConfig, setNotifConfig] = useState({
   telegramEnabled: true,
-  telegramBotToken: import.meta.env.VITE_TELEGRAM_BOT_TOKEN,
-  telegramChatId: import.meta.env.VITE_TELEGRAM_CHAT_ID,
+  telegramBotToken: '8964468154:AAE1CK7aN9Rj7JdpTOemiG6WWWf3dB2lOlE',
+  telegramChatId: '8449507380',
   emailEnabled: true,
   emailAddress: 'security-alerts@client-corp.com',
   notifyOnCritical: true,
