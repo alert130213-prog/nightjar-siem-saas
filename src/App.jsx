@@ -548,49 +548,49 @@ const addLogToFirestore = async (logData) => {
 };
 
   const handleClaimFreeSubdomain = (e) => {
-    e.preventDefault();
-    if (!freeSubInput.trim()) return;
+  e.preventDefault();
+  if (!freeSubInput.trim()) {
+    setDomainToast({ type: 'error', text: 'Введіть назву субдомену!' });
+ const checkDomainStatus = (domain) => {
+  return 'ACTIVE';
+};   
+ return;
+  }
 
-    const cleanName = freeSubInput.toLowerCase().replace(/[^a-z0-9-]/g, '');
-    const fullDomainName = `${cleanName}.nightjar-soc.com`;
+  const cleanName = freeSubInput.toLowerCase().replace(/[^a-z0-9-]/g, '');
+  const fullDomainName = `${cleanName}.nightjar-soc.com`;
 
-    if (domains.some(d => d.name === fullDomainName)) {
-      setDomainToast({ type: 'error', text: `Субдомен ${fullDomainName} вже зайнятий!` });
-      return;
-    }
+  if (domains.some(d => d.name === fullDomainName)) {
+    setDomainToast({ type: 'error', text: `Субдомен ${fullDomainName} вже зайнятий!` });
+    return;
+  }
 
-    const newDom = {
-      id: `DOM-${Math.floor(100 + Math.random() * 900)}`,
-      name: fullDomainName,
-      type: 'Free Subdomain',
-      status: 'ACTIVE',
-      ssl: "Let's Encrypt SSL (Instant)",
-      waf: 'Protected (Active 24/7)'
-    };
-
-    setDomains(prev => [newDom, ...prev]);
-    setFreeSubInput('');
-    setDomainToast({ type: 'success', text: `✅ Субдомен ${fullDomainName} успішно створено та захищено WAF у Firestore!` });
+  const newDom = {
+    id: `DOM-${Math.floor(100 + Math.random() * 900)}`,
+    name: fullDomainName,
+    type: 'Free Subdomain',
+    status: 'ACTIVE',
+    ssl: "Let's Encrypt SSL (Valid)",
+    waf: 'Protected (Active 24/7)'
   };
 
-  const handleAddCustomDomain = (e) => {
-    e.preventDefault();
-    if (!customDomainInput.trim()) return;
+  setDomains(prev => [newDom, ...prev]);
+  setFreeSubInput('');
+  setDomainToast({ type: 'success', text: `✅ Субдомен ${fullDomainName} успішно створено та захищено WAF!` });
 
-    const newDom = {
-      id: `DOM-${Math.floor(100 + Math.random() * 900)}`,
-      name: customDomainInput.trim().toLowerCase(),
-      type: 'Custom Domain',
-      status: 'PENDING_DNS',
-      ssl: 'Pending DNS CNAME Verification',
-      waf: 'Standby'
-    };
-
-    setDomains(prev => [newDom, ...prev]);
-    setCustomDomainInput('');
-    setDomainToast({ type: 'success', text: `✅ Домен додано! Налаштуйте CNAME запис на proxy.nightjar-soc.com` });
+  const newLog = {
+    id: `LOG-DOM-${Math.floor(800 + Math.random() * 200)}`,
+    timestamp: new Date().toTimeString().split(' ')[0],
+    source: 'domain-manager',
+    target: fullDomainName,
+    severity: 'INFO',
+    type: 'New Free Subdomain Created',
+    status: 'ACTIVATED',
+    payload: `Subdomain ${fullDomainName} created with SSL and WAF protection.`,
+    IP: '10.0.4.1'
   };
-
+  setLogs(prev => [newLog, ...prev]);
+};
   const orderRemediation = (vuln) => {
     if (credits < vuln.price) {
       alert(lang === 'ua' ? "Недостатньо кредитів. Поповніть рахунок." : "Insufficient credits.");
