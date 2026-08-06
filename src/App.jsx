@@ -468,55 +468,84 @@ const addLogToFirestore = async (logData) => {
     }, 1000);
   };
 
-  const runRealScan = async (e) => {
-    e.preventDefault();
-    if (!scanUrl) return;
+ const runRealScan = async (e) => {
+  e.preventDefault();
+  if (!scanUrl) return;
 
-    setIsScanning(true);
-    setScanResult(null);
+  setIsScanning(true);
+  setScanResult(null);
 
-    try {
-      await fetch(scanUrl, { method: 'GET', mode: 'no-cors' });
-    } catch (err) {
-      // CORS safeguard
+  try {
+    // Додаємо проксі для обходу CORS
+    const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(scanUrl)}`;
+    const response = await fetch(proxyUrl);
+    const data = await response.json();
+    
+    // Аналізуємо заголовки з відповіді
+    const headers = data.headers || {};
+    const findings = [];
+
+    // Перевірка CSP
+    if (!headers['content-security-policy']) {
+      findings.push({
+        id: `VULN-${Math.floor(300 + Math.random() * 600)}`,
+        target: scanUrl,
+        title: 'Відсутній заголовок Content-Security-Policy (CSP)',
+        cve: 'CWE-693',
+        severity: 'MEDIUM',
+        price: 150,
+        status: 'OPEN',
+        description: 'Цільовий ресурс не має CSP політики, що підвищує ризик XSS атак.'
+      });
     }
 
-    setTimeout(() => {
-      setIsScanning(false);
-      const detectedVulns = [
-        {
-          id: `VULN-${Math.floor(300 + Math.random() * 600)}`,
-          target: scanUrl,
-          title: 'Відсутній заголовок Content-Security-Policy (CSP)',
-          cve: 'CWE-693',
-          severity: 'MEDIUM',
-          price: 150,
-          status: 'OPEN',
-          description: 'Цільовий ресурс не має CSP політики, що підвищує ризик XSS атак.'
-        },
-        {
-          id: `VULN-${Math.floor(300 + Math.random() * 600)}`,
-          target: scanUrl,
-          title: 'Застаріла версія TLS 1.1 / Відсутній HSTS',
-          cve: 'CVE-2016-2183',
-          severity: 'HIGH',
-          price: 250,
-          status: 'OPEN',
-          description: 'Ресурс дозволяє застарілі криптографічні протоколи.'
-        }
-      ];
-
-      setScanResult({
+    // Перевірка HSTS
+    if (!headers['strict-transport-security']) {
+      findings.push({
+        id: `VULN-${Math.floor(300 + Math.random() * 600)}`,
         target: scanUrl,
-        timestamp: new Date().toLocaleString(),
-        score: 74,
-        foundCount: detectedVulns.length,
-        items: detectedVulns
+        title: 'Відсутній заголовок Strict-Transport-Security (HSTS)',
+        cve: 'CWE-319',
+        severity: 'HIGH',
+        price: 250,
+        status: 'OPEN',
+        description: 'Ресурс не захищений від зниження протоколу до HTTP.'
       });
+    }
 
-      setVulnerabilities(prev => [...detectedVulns, ...prev]);
-    }, 2500);
-  };
+    // Перевірка X-Frame-Options
+    if (!headers['x-frame-options']) {
+      findings.push({
+        id: `VULN-${Math.floor(300 + Math.random() * 600)}`,
+        target: scanUrl,
+        title: 'Відсутній заголовок X-Frame-Options',
+        cve: 'CWE-1021',
+        severity: 'MEDIUM',
+        price: 120,
+        status: 'OPEN',
+        description: 'Сайт вразливий до клікджекінгу.'
+      });
+    }
+
+    setScanResult({
+      target: scanUrl,
+      timestamp: new Date().toLocaleString(),
+      score: Math.max(0, 100 - findings.length * 15),
+      foundCount: findings.length,
+      items: findings
+    });
+
+    if (findings.length > 0) {
+      setVulnerabilities(prev => [...findings, ...prev]);
+    }
+
+  } catch (error) {
+    console.error("Помилка сканування:", error);
+    alert("Не вдалося виконати сканування. Перевірте URL та спробуйте ще раз.");
+  }
+
+  setIsScanning(false);
+};
 
   const handleClaimFreeSubdomain = (e) => {
     e.preventDefault();
