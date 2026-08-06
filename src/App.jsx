@@ -278,11 +278,13 @@ export default function App() {
   // Налаштування сповіщень
   const [notifConfig, setNotifConfig] = useState({
     telegramEnabled: true,
-    telegramBotToken: '8964468154:AAE1CK7aN9Rj7JdpTOemiG6WWWf3dB2lOlE',
-    telegramChatId: '-1001928349120',
+    telegramBotToken: '8964468154:AAE1CK7aN9Rj7JdpTOemiG6W',
+    telegramChatId: '10019834912',
     emailEnabled: true,
     emailAddress: 'security-alerts@client-corp.com',
-    notifyOnCo;
+    notifyOnCritical: true,
+    notifyOnHigh: true,
+  });
   const [logs, setLogs] = useState([]);
   const [vulnerabilities, setVulnerabilities] = useState(INITIAL_VULNS);
   const [credits, setCredits] = useState(1200);
