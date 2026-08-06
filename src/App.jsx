@@ -510,7 +510,7 @@ export default function App() {
       name: fullDomainName,
       type: 'Free Subdomain',
       status: 'ACTIVE',
-      ssl: 'Let's Encrypt SSL (Instant)',
+      ssl: "Let's Encrypt SSL (Instant)",
       waf: 'Protected (Active 24/7)'
     };
 
