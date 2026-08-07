@@ -717,7 +717,7 @@ const addLogToFirestore = async (logData) => {
               </div>
               <p className="text-[9px] text-slate-400 tracking-wider">[{t.systemTag}]</p>
             </div>
-          </div>
+          </header>
 
         <div className="hidden sm:flex items-center gap-2 text-xs bg-slate-950 px-3 py-1.5 border border-slate-800">
   <span className="text-slate-400">СТАТУС:</span>
