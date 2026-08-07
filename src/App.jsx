@@ -281,8 +281,8 @@ export default function App() {
     smtpPass: '••••••••••••••••',
     smtpSecure: true,
     telegramEnabled: true,
-    telegramBotToken: '8964468154:AAE1CK7aN9Rj7JdpTOemiG6WWWf3dB2lOlE',
-    telegramChatId: '-1001928349120',
+    telegramBotToken:  '',
+    telegramChatId: '',
     emailAddress: 'security-alerts@client-corp.com',
     notifyOnCritical: true,
     notifyOnHigh: true
@@ -1552,7 +1552,7 @@ export default function App() {
                 </div>
                 <div className="bg-slate-950 p-3 border border-slate-850 text-xs">
                   <span className="text-slate-400 block">АКТИВНА КАРТА:</span>
-                  <span className="text-emerald-400 font-bold">•••• •••• •••• 9841 (Visa/Mastercard)</span>
+                  <span className="text-emerald-400 font-bold">•••• •••• •••• 1111 (Visa/Mastercard)</span>
                 </div>
               </div>
 
