@@ -317,7 +317,6 @@ export default function App() {
   const [scanResult, setScanResult] = useState(null);
   
   // Домени та субдомени стани
-  const [domains, setDomains] = useState(INITIAL_DOMomains);
   const [freeSubInput, setFreeSubInput] = useState('');
   const [customDomainInput, setCustomDomainInput] = useState('');
   const [domainToast, setDomainToast] = useState(null);
@@ -568,7 +567,7 @@ const addLogToFirestore = async (logData) => {
   setIsScanning(false);
 };
 
-  // const handleClaimFreeSubdomain = (e) => {
+  const handleClaimFreeSubdomain = (e) => {
   e.preventDefault();
   if (!freeSubInput.trim()) {
     setDomainToast({ type: 'error', text: 'Введіть назву субдомену!' });
@@ -581,7 +580,6 @@ const addLogToFirestore = async (logData) => {
   const cleanName = freeSubInput.toLowerCase().replace(/[^a-z0-9-]/g, '');
   const fullDomainName = `${cleanName}.nightjar-soc.com`;
 
-  if (domains.some(d => d.name === fullDomainName)) {
     setDomainToast({ type: 'error', text: `Субдомен ${fullDomainName} вже зайнятий!` });
     return;
   }
@@ -609,7 +607,7 @@ const addLogToFirestore = async (logData) => {
     status: 'ACTIVATED',
     payload: `Subdomain ${fullDomainName} created with SSL and WAF protection.`,
     IP: '10.0.4.1'
-  
+  };
   setLogs(prev => [newLog, ...prev]);
 
   const orderRemediation = (vuln) => {
@@ -777,7 +775,6 @@ const addLogToFirestore = async (logData) => {
             { id: 'dashboard', label: t.tabDashboard, icon: Shield },
             { id: 'logs', label: t.tabLogs, icon: Terminal, badge: logs.length },
             { id: 'scanner', label: t.tabScanner, icon: Crosshair },
-            { id: 'domains', label: t.tabDomains, icon: Globe, badge: domains.length, highlight: true },
             { id: 'remediation', label: t.tabRemediation, icon: Wrench, badge: vulnerabilities.filter(v => v.status === 'OPEN').length },
             { id: 'billing', label: t.tabBilling, icon: CreditCard, badge: paymentHistory.length },
             { id: 'notifications', label: t.tabNotifications, icon: Bell },
@@ -1178,7 +1175,6 @@ const addLogToFirestore = async (logData) => {
           </div>
         )}
 
-        {activeTab === 'domains' && (
           <div className="space-y-8 animate-fade-in">
             <div className="bg-slate-900 p-6 md:p-8 border border-slate-800 space-y-8">
               <div>
@@ -1269,7 +1265,6 @@ const addLogToFirestore = async (logData) => {
                   </div>
 
                   <div className="divide-y divide-slate-900">
-                    {domains.map(dom => (
                       <div key={dom.id} className="grid grid-cols-12 p-3 items-center">
                         <div className="col-span-4 font-bold text-slate-200">{dom.name}</div>
                         <div className="col-span-3 text-cyan-400">{dom.type}</div>
