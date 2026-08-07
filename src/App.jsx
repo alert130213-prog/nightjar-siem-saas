@@ -568,7 +568,7 @@ const addLogToFirestore = async (logData) => {
   setIsScanning(false);
 };
 
-  const handleClaimFreeSubdomain = (e) => {
+  // const handleClaimFreeSubdomain = (e) => {
   e.preventDefault();
   if (!freeSubInput.trim()) {
     setDomainToast({ type: 'error', text: 'Введіть назву субдомену!' });
@@ -609,9 +609,9 @@ const addLogToFirestore = async (logData) => {
     status: 'ACTIVATED',
     payload: `Subdomain ${fullDomainName} created with SSL and WAF protection.`,
     IP: '10.0.4.1'
-  };
+  
   setLogs(prev => [newLog, ...prev]);
-};
+
   const orderRemediation = (vuln) => {
     if (credits < vuln.price) {
       alert(lang === 'ua' ? "Недостатньо кредитів. Поповніть рахунок." : "Insufficient credits.");
