@@ -567,49 +567,62 @@ const addLogToFirestore = async (logData) => {
   setIsScanning(false);
 };
 
-  const handleClaimFreeSubdomain = (e) => {
+const handleClaimFreeSubdomain = (e) => {
   e.preventDefault();
-  if (!freeSubInput.trim()) {
-    setDomainToast({ type: 'error', text: 'Введіть назву субдомену!' });
- const checkDomainStatus = (domain) => {
-  return 'ACTIVE';
-};   
- return;
+  
+  try {
+    const name = freeSubInput.trim();
+    if (!name) {
+      setDomainToast({ type: 'error', text: 'Введіть назву субдомену!' });
+      return;
+    }
+    
+    const cleanName = name.toLowerCase().replace(/[^a-z0-9-]/g, '');
+    if (!cleanName) {
+      setDomainToast({ type: 'error', text: 'Назва має містити лише літери, цифри та дефіси!' });
+      return;
+    }
+    
+    const fullDomain = `${cleanName}.nightjar-soc.com`;
+    
+    // Перевірка на дублікат
+    if (domains.some(d => d.name === fullDomain)) {
+      setDomainToast({ type: 'error', text: `Домен ${fullDomain} вже існує!` });
+      return;
+    }
+    
+    // Створення нового домену
+    const newDomain = {
+      id: `DOM-${Date.now()}`,
+      name: fullDomain,
+      type: 'Free Subdomain',
+      status: 'ACTIVE',
+      ssl: "Let's Encrypt SSL (Valid)",
+      waf: 'Protected (Active 24/7)'
+    };
+    
+    setDomains(prev => [newDomain, ...prev]);
+    setFreeSubInput('');
+    setDomainToast({ type: 'success', text: `✅ Домен ${fullDomain} створено!` });
+    
+    // Логування
+    const newLog = {
+      id: `LOG-${Date.now()}`,
+      timestamp: new Date().toTimeString().split(' ')[0],
+      source: 'domain-manager',
+      target: fullDomain,
+      severity: 'INFO',
+      type: 'New Free Subdomain Created',
+      status: 'ACTIVATED',
+      IP: '10.0.4.1'
+    };
+    setLogs(prev => [newLog, ...prev]);
+    
+  } catch (error) {
+    console.error('Помилка створення домену:', error);
+    setDomainToast({ type: 'error', text: 'Помилка створення домену. Спробуйте ще раз.' });
   }
-
-  const cleanName = freeSubInput.toLowerCase().replace(/[^a-z0-9-]/g, '');
-  const fullDomainName = `${cleanName}.nightjar-soc.com`;
-
-    setDomainToast({ type: 'error', text: `Субдомен ${fullDomainName} вже зайнятий!` });
-    return;
-  }
-
-  const newDom = {
-    id: `DOM-${Math.floor(100 + Math.random() * 900)}`,
-    name: fullDomainName,
-    type: 'Free Subdomain',
-    status: 'ACTIVE',
-    ssl: "Let's Encrypt SSL (Valid)",
-    waf: 'Protected (Active 24/7)'
-  };
-
-  setDomains(prev => [newDom, ...prev]);
-  setFreeSubInput('');
-  setDomainToast({ type: 'success', text: `✅ Субдомен ${fullDomainName} успішно створено та захищено WAF!` });
-
-  const newLog = {
-    id: `LOG-DOM-${Math.floor(800 + Math.random() * 200)}`,
-    timestamp: new Date().toTimeString().split(' ')[0],
-    source: 'domain-manager',
-    target: fullDomainName,
-    severity: 'INFO',
-    type: 'New Free Subdomain Created',
-    status: 'ACTIVATED',
-    payload: `Subdomain ${fullDomainName} created with SSL and WAF protection.`,
-    IP: '10.0.4.1'
-  };
-  setLogs(prev => [newLog, ...prev]);
-
+};
   const orderRemediation = (vuln) => {
     if (credits < vuln.price) {
       alert(lang === 'ua' ? "Недостатньо кредитів. Поповніть рахунок." : "Insufficient credits.");
