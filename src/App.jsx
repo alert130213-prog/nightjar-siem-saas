@@ -135,7 +135,7 @@ const TRANSLATIONS = {
     tabBilling: "BILLING & GATEWAYS (STRIPE/LIQPAY)",
     tabAdmin: "ADMIN & RBAC CONSOLE",
     heroBadge: "NIGHTJAR 24/7 ACTIVE THREAT INTERCEPTION & STRICT RBAC SECURITY",
-    heroSlogan: ""Enterprise-grade cloud security with multi-tier RBAC and real payment gateways"",
+    heroSlogan: "Enterprise-grade cloud security with multi-tier RBAC and real payment gateways",
     heroSub: "Automated real-time threat interception platform with persistent log storage in Firebase Firestore, robust SMTP alerting, and detailed attack analytics.",
     btnConnect: "ENABLE 24/7 PROTECTION",
     btnCheckVuln: "SCAN VULNERABILITIES (REAL PROBE)",
@@ -190,7 +190,7 @@ const INITIAL_VULNS = [
 ];
 
 const INITIAL_DOMomains = [
-  { id: 'DOM-1', name: 'client-secure.nightjar-soc.com', type: 'Free Subdomain', status: 'ACTIVE', ssl: 'Let's Encrypt SSL (Valid)', waf: 'Protected (Strict)' },
+  { id: 'DOM-1', name: 'client-secure.nightjar-soc.com', type: 'Free Subdomain', status: 'ACTIVE', ssl: "Let's Encrypt SSL (Valid)", waf: 'Protected (Strict)' },
   { id: 'DOM-2', name: 'store-app.io', type: 'Custom Domain', status: 'ACTIVE', ssl: 'Cloudflare SSL', waf: 'Protected (Standard)' }
 ];
 
@@ -557,7 +557,7 @@ export default function App() {
       name: fullDomainName,
       type: 'Free Subdomain',
       status: 'ACTIVE',
-      ssl: 'Let's Encrypt SSL (Instant)',
+      ssl: "Let's Encrypt SSL (Instant)",
       waf: 'Protected (Active 24/7)'
     };
 
